@@ -1,7 +1,6 @@
 package com.iprody.paymentserviceapp.controller;
 
 import com.iprody.paymentserviceapp.model.Payment;
-import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +22,7 @@ public class PaymentController {
 
     @GetMapping("/{id}")
     public Payment getPayment(@PathVariable Long id) {
-        return paymentMap1.get(id);
+        return paymentMap.get(id);
     }
 
     @GetMapping
