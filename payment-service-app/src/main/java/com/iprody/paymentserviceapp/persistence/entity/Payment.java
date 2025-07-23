@@ -18,17 +18,17 @@ public class Payment {
     @Column(nullable = false, name = "inquiry_ref_id")
     private UUID inquiryRefId;
 
-    @Column(nullable = false, precision = 5, scale = 2)
+    @Column(nullable = false, precision = 5, scale = 2, name = "amount")
     private BigDecimal amount;
 
-    @Column(nullable = false, length = 3)
+    @Column(nullable = false, length = 3, name = "currency")
     private String currency;
 
     @Column(name = "transaction_ref_id")
     private UUID transactionRefId;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(nullable = false, name = "status")
     private PaymentStatus status;
 
     @Column(columnDefinition = "text")
