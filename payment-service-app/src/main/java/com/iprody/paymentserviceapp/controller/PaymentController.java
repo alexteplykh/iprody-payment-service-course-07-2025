@@ -1,6 +1,6 @@
 package com.iprody.paymentserviceapp.controller;
 
-import com.iprody.paymentserviceapp.model.Payment;
+import com.iprody.paymentserviceapp.persistence.entity.Payment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
