@@ -4,9 +4,12 @@ import com.iprody.paymentserviceapp.persistence.PaymentFilterFactory;
 import com.iprody.paymentserviceapp.persistence.PaymentRepository;
 import com.iprody.paymentserviceapp.persistence.entity.Payment;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,7 +25,17 @@ public class PaymentController {
     }
 
     @GetMapping("/search")
-    public List<Payment> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter) {
-        return paymentRepository.findAll(PaymentFilterFactory.fromFilter(paymentFilter));
+    public Page<Payment> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter,
+                                       @RequestParam(defaultValue = "0") int page,
+                                       @RequestParam(defaultValue = "5") int size,
+                                       @RequestParam(defaultValue = "createdAt") String sortedBy,
+                                       @RequestParam(defaultValue = "desc") String direction) {
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortedBy).descending()
+                : Sort.by(sortedBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        return paymentRepository.findAll(PaymentFilterFactory.fromFilter(paymentFilter), pageable);
     }
 }
