@@ -26,8 +26,8 @@ public class PaymentController {
 
     @GetMapping("/search")
     public Page<Payment> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter,
-                                       @RequestParam(defaultValue = "0") int page,
-                                       @RequestParam(defaultValue = "5") int size,
+                                       @RequestParam(defaultValue = "1") int page,
+                                       @RequestParam(defaultValue = "25") int size,
                                        @RequestParam(defaultValue = "createdAt") String sortedBy,
                                        @RequestParam(defaultValue = "desc") String direction) {
         Sort sort = direction.equalsIgnoreCase("desc")
