@@ -26,6 +26,7 @@ public class Payment {
     @Column(nullable = false, precision = 5, scale = 2, name = "amount")
     private BigDecimal amount;
 
+    @Enumerated(EnumType.STRING)
     @Column(nullable = false, length = 3, name = "currency")
     private Currency currency;
 
