@@ -27,7 +27,7 @@ public class Payment {
     private BigDecimal amount;
 
     @Column(nullable = false, length = 3, name = "currency")
-    private String currency;
+    private Currency currency;
 
     @Column(name = "transaction_ref_id")
     private UUID transactionRefId;
