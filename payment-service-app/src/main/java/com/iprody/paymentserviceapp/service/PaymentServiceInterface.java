@@ -9,5 +9,5 @@ import java.util.UUID;
 
 public interface PaymentServiceInterface {
     PaymentDto get(UUID id);
-    Page<PaymentDto> search(PaymentFilterDto filter, Pageable pageable);
+    Page<PaymentDto> search(PaymentFilterDto filter, int page, int size, String sortedBy, String direction);
 }

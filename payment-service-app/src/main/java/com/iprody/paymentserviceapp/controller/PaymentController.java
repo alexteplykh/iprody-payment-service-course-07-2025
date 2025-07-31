@@ -1,8 +1,7 @@
 package com.iprody.paymentserviceapp.controller;
 
-import com.iprody.paymentserviceapp.persistence.PaymentFilterFactory;
-import com.iprody.paymentserviceapp.persistence.PaymentRepository;
-import com.iprody.paymentserviceapp.persistence.entity.Payment;
+import com.iprody.paymentserviceapp.dto.PaymentDto;
+import com.iprody.paymentserviceapp.service.PaymentServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -17,25 +16,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class PaymentController {
 
-    private final PaymentRepository paymentRepository;
+    private final PaymentServiceInterface paymentService;
 
     @GetMapping("/{guid}")
-    public Payment getPayment(@PathVariable UUID guid) {
-        return paymentRepository.findById(guid).orElse(null);
+    public PaymentDto getPayment(@PathVariable UUID guid) {
+        return paymentService.get(guid);
     }
 
     @GetMapping("/search")
-    public Page<Payment> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter,
-                                       @RequestParam(defaultValue = "1") int page,
-                                       @RequestParam(defaultValue = "25") int size,
-                                       @RequestParam(defaultValue = "createdAt") String sortedBy,
-                                       @RequestParam(defaultValue = "desc") String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc")
-                ? Sort.by(sortedBy).descending()
-                : Sort.by(sortedBy).ascending();
+    public Page<PaymentDto> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter,
+                                          @RequestParam(defaultValue = "1") int page,
+                                          @RequestParam(defaultValue = "25") int size,
+                                          @RequestParam(defaultValue = "createdAt") String sortedBy,
+                                          @RequestParam(defaultValue = "desc") String direction) {
 
-        Pageable pageable = PageRequest.of(page, size, sort);
-
-        return paymentRepository.findAll(PaymentFilterFactory.fromFilter(paymentFilter), pageable);
+        return paymentService.search(paymentFilter, page, size, sortedBy, direction);
     }
 }
