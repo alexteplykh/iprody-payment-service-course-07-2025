@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 @Getter
 @Setter
@@ -15,6 +15,6 @@ public class PaymentFilterDto {
     private Currency currency;
     private BigDecimal minAmount;
     private BigDecimal maxAmount;
-    private Instant createdAfter;
-    private Instant createdBefore;
+    private OffsetDateTime createdAfter;
+    private OffsetDateTime createdBefore;
 }

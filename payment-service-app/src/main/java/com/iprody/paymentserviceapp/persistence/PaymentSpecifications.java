@@ -6,7 +6,7 @@ import com.iprody.paymentserviceapp.persistence.entity.PaymentStatus;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
-import java.time.Instant;
+import java.time.OffsetDateTime;
 
 public final class PaymentSpecifications {
 
@@ -35,17 +35,17 @@ public final class PaymentSpecifications {
                 cb.between(root.get("amount"), min, max);
     }
 
-    public static Specification<Payment> createdAtBefore(Instant before) {
+    public static Specification<Payment> createdAtBefore(OffsetDateTime before) {
         return (root, query, cb) ->
                 cb.lessThan(root.get("createdAt"), before);
     }
 
-    public static Specification<Payment> createdAtAfter(Instant after) {
+    public static Specification<Payment> createdAtAfter(OffsetDateTime after) {
         return (root, query, cb) ->
                 cb.greaterThan(root.get("createdAt"), after);
     }
 
-    public static Specification<Payment> createdBetween(Instant after, Instant before) {
+    public static Specification<Payment> createdBetween(OffsetDateTime after, OffsetDateTime before) {
         return (root, query, cb) ->
                 cb.between(root.get("createdAt"), after, before);
     }
