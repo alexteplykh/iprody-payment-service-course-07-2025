@@ -4,9 +4,6 @@ import com.iprody.paymentserviceapp.dto.PaymentDto;
 import com.iprody.paymentserviceapp.service.PaymentServiceInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
