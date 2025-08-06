@@ -2,6 +2,7 @@ package com.iprody.paymentserviceapp.dto;
 
 import com.iprody.paymentserviceapp.persistence.entity.Currency;
 import com.iprody.paymentserviceapp.persistence.entity.PaymentStatus;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class PaymentDto {
     private UUID guid;
     private UUID inquiryRefId;
