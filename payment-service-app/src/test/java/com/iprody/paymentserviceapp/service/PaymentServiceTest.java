@@ -102,14 +102,15 @@ class PaymentServiceTest {
 
     @Test
     void get_notValidId_throwsException() {
-        when(paymentRepository.findById(guid)).thenReturn(Optional.empty());
         //given
-        //when
-        //then
+        when(paymentRepository.findById(guid)).thenReturn(Optional.empty());
+
+        //when-then
         assertThrows(EntityNotFoundException.class, () -> {
             paymentService.get(guid);
         });
 
+        //when
         verify(paymentRepository).findById(guid);
     }
 
