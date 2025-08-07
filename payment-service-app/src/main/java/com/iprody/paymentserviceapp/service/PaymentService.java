@@ -46,4 +46,31 @@ public class PaymentService implements PaymentServiceInterface{
 
         return paymentRepository.findAll(spec, pageable).map(paymentMapper::toDto);
     }
+
+    @Override
+    public PaymentDto create(PaymentDto dto) {
+        Payment entity = paymentMapper.toEntity(dto);
+        entity.setGuid(null);
+        Payment saved = paymentRepository.save(entity);
+        return paymentMapper.toDto(saved);
+    }
+
+    @Override
+    public PaymentDto update(UUID id, PaymentDto dto) {
+        Payment existing = paymentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Платёж не найден: " + id));
+
+        Payment updated = paymentMapper.toEntity(dto);
+        updated.setGuid(id);
+        Payment saved = paymentRepository.save(updated);
+        return paymentMapper.toDto(saved);
+    }
+
+    @Override
+    public void delete(UUID id) {
+        if (!paymentRepository.existsById(id)) {
+            throw new EntityNotFoundException("Платеж не найден: " + id);
+        }
+        paymentRepository.deleteById(id);
+    }
 }
