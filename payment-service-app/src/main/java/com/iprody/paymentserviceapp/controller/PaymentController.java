@@ -1,7 +1,9 @@
 package com.iprody.paymentserviceapp.controller;
 
 import com.iprody.paymentserviceapp.dto.PaymentDto;
+import com.iprody.paymentserviceapp.dto.PaymentStatusUpdateDto;
 import com.iprody.paymentserviceapp.service.PaymentServiceInterface;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -46,5 +48,11 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable UUID id) {
         paymentService.delete(id);
+    }
+
+    @PatchMapping("/{id}/status")
+    public PaymentDto updateStatus(@PathVariable UUID id,
+                                   @RequestBody @Valid PaymentStatusUpdateDto dto) {
+        return paymentService.updateStatus(id, dto.getStatus());
     }
 }

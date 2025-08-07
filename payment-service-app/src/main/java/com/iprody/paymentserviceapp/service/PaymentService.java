@@ -6,7 +6,9 @@ import com.iprody.paymentserviceapp.mapper.PaymentMapper;
 import com.iprody.paymentserviceapp.persistence.PaymentFilterFactory;
 import com.iprody.paymentserviceapp.persistence.PaymentRepository;
 import com.iprody.paymentserviceapp.persistence.entity.Payment;
+import com.iprody.paymentserviceapp.persistence.entity.PaymentStatus;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -64,6 +66,21 @@ public class PaymentService implements PaymentServiceInterface{
             throw new EntityNotFoundException("Платеж не найден: " + id);
         }
         paymentRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public PaymentDto updateStatus(UUID id, PaymentStatus status) {
+        int updatedRows = paymentRepository.updateStatus(id, status);
+
+        if (updatedRows == 0) {
+            throw new EntityNotFoundException("Платёж не найден: " + id);
+        }
+
+        Payment updated = paymentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Платёж не найден после обновления: " + id));
+
+        return paymentMapper.toDto(updated);
     }
 
 
