@@ -83,5 +83,19 @@ public class PaymentService implements PaymentServiceInterface{
         return paymentMapper.toDto(updated);
     }
 
+    @Override
+    public PaymentDto updateNote(UUID id, String note) {
+        int updatedRows = paymentRepository.updateNote(id, note);
+
+        if (updatedRows == 0) {
+            throw new EntityNotFoundException("Платёж не найден: " + id);
+        }
+
+        Payment updated = paymentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Платёж не найден после обновления: " + id));
+
+        return paymentMapper.toDto(updated);
+    }
+
 
 }

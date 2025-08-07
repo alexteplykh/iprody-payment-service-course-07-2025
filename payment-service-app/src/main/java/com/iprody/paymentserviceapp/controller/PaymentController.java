@@ -1,5 +1,6 @@
 package com.iprody.paymentserviceapp.controller;
 
+import com.iprody.paymentserviceapp.dto.NoteUpdateDto;
 import com.iprody.paymentserviceapp.dto.PaymentDto;
 import com.iprody.paymentserviceapp.dto.PaymentStatusUpdateDto;
 import com.iprody.paymentserviceapp.service.PaymentServiceInterface;
@@ -40,6 +41,7 @@ public class PaymentController {
     }
 
     @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
     public PaymentDto update(@PathVariable UUID id, @RequestBody PaymentDto dto) {
         return paymentService.update(id, dto);
     }
@@ -50,9 +52,17 @@ public class PaymentController {
         paymentService.delete(id);
     }
 
+    @ResponseStatus(HttpStatus.OK)
     @PatchMapping("/{id}/status")
     public PaymentDto updateStatus(@PathVariable UUID id,
                                    @RequestBody @Valid PaymentStatusUpdateDto dto) {
         return paymentService.updateStatus(id, dto.getStatus());
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{id}/note")
+    public PaymentDto updateNote(@PathVariable UUID id,
+                                 @RequestBody @Valid NoteUpdateDto dto) {
+        return paymentService.updateNote(id, dto.getNote());
     }
 }

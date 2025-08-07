@@ -19,4 +19,9 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID>, JpaSpec
     @Transactional
     @Query("UPDATE Payment p SET p.status = :status WHERE p.guid = :id")
     int updateStatus(@Param("id") UUID id, @Param("status") PaymentStatus status);
+
+    @Modifying
+    @Transactional
+    @Query("UPDATE Payment p SET p.note = :note WHERE p.guid = :id")
+    int updateNote(UUID id, String note);
 }

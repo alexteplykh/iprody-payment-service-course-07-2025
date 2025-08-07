@@ -16,4 +16,6 @@ public interface PaymentServiceInterface {
     PaymentDto update(UUID id, PaymentDto dto);
     void delete(UUID id);
     PaymentDto updateStatus(UUID id, @NotNull PaymentStatus status);
+
+    PaymentDto updateNote(UUID id, @NotNull String note);
 }
