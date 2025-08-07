@@ -28,12 +28,14 @@ public class PaymentService implements PaymentServiceInterface{
         this.paymentMapper = paymentMapper;
     }
 
+    @Override
     public PaymentDto get(UUID id) {
         return paymentRepository.findById(id)
                 .map(paymentMapper::toDto)
                 .orElseThrow(() -> new EntityNotFoundException("Платеж не найден: " + id));
     }
 
+    @Override
     public Page<PaymentDto> search(PaymentFilterDto filter, int page, int size, String sortedBy, String direction) {
         Sort sort = direction.equalsIgnoreCase("desc")
                 ? Sort.by(sortedBy).descending()
