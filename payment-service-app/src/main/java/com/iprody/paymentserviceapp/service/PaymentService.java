@@ -8,12 +8,9 @@ import com.iprody.paymentserviceapp.persistence.PaymentRepository;
 import com.iprody.paymentserviceapp.persistence.entity.Payment;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -36,12 +33,7 @@ public class PaymentService implements PaymentServiceInterface{
     }
 
     @Override
-    public Page<PaymentDto> search(PaymentFilterDto filter, int page, int size, String sortedBy, String direction) {
-        Sort sort = direction.equalsIgnoreCase("desc")
-                ? Sort.by(sortedBy).descending()
-                : Sort.by(sortedBy).ascending();
-
-        Pageable pageable = PageRequest.of(page, size, sort);
+    public Page<PaymentDto> search(PaymentFilterDto filter, Pageable pageable) {
         Specification<Payment> spec = PaymentFilterFactory.fromFilter(filter);
 
         return paymentRepository.findAll(spec, pageable).map(paymentMapper::toDto);
@@ -73,4 +65,6 @@ public class PaymentService implements PaymentServiceInterface{
         }
         paymentRepository.deleteById(id);
     }
+
+
 }
