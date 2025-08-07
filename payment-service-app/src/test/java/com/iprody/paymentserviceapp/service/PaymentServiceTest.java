@@ -140,7 +140,7 @@ class PaymentServiceTest {
             when(paymentMapper.toDto(payment)).thenReturn(paymentDto);
 
             //when
-            Page<PaymentDto> result = paymentService.search(filter, page, size, sortedBy, direction);
+            Page<PaymentDto> result = paymentService.search(filter, pageable);
 
             //then
             assertEquals(1, result.getTotalElements());
@@ -179,7 +179,7 @@ class PaymentServiceTest {
             when(paymentMapper.toDto(payment)).thenReturn(paymentDto);
 
             //when
-            Page<PaymentDto> result = paymentService.search(filter, page, size, sortedBy, direction);
+            Page<PaymentDto> result = paymentService.search(filter, pageable);
 
             //then
             assertEquals(1, result.getTotalElements());
