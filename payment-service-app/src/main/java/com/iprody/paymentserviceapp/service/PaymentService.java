@@ -2,12 +2,12 @@ package com.iprody.paymentserviceapp.service;
 
 import com.iprody.paymentserviceapp.controller.PaymentFilterDto;
 import com.iprody.paymentserviceapp.dto.PaymentDto;
+import com.iprody.paymentserviceapp.exception.EntityNotFoundException;
 import com.iprody.paymentserviceapp.mapper.PaymentMapper;
 import com.iprody.paymentserviceapp.persistence.PaymentFilterFactory;
 import com.iprody.paymentserviceapp.persistence.PaymentRepository;
 import com.iprody.paymentserviceapp.persistence.entity.Payment;
 import com.iprody.paymentserviceapp.persistence.entity.PaymentStatus;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +31,7 @@ public class PaymentService implements PaymentServiceInterface{
     public PaymentDto get(UUID id) {
         return paymentRepository.findById(id)
                 .map(paymentMapper::toDto)
-                .orElseThrow(() -> new EntityNotFoundException("Платеж не найден: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(id, "get", "Платеж не найден"));
     }
 
     @Override
@@ -52,7 +52,7 @@ public class PaymentService implements PaymentServiceInterface{
     @Override
     public PaymentDto update(UUID id, PaymentDto dto) {
         if (!paymentRepository.existsById(id)) {
-            throw new IllegalArgumentException("Платеж не найден: " + id);
+            throw new IllegalArgumentException("Платеж не найден" + id);
         }
 
         Payment updated = paymentMapper.toEntity(dto);
@@ -64,7 +64,7 @@ public class PaymentService implements PaymentServiceInterface{
     @Override
     public void delete(UUID id) {
         if (!paymentRepository.existsById(id)) {
-            throw new EntityNotFoundException("Платеж не найден: " + id);
+            throw new EntityNotFoundException(id, "delete", "Платеж не найден");
         }
         paymentRepository.deleteById(id);
     }
@@ -75,11 +75,11 @@ public class PaymentService implements PaymentServiceInterface{
         int updatedRows = paymentRepository.updateStatus(id, status);
 
         if (updatedRows == 0) {
-            throw new EntityNotFoundException("Платёж не найден: " + id);
+            throw new EntityNotFoundException(id, "updateStatus", "Платеж не найден");
         }
 
         Payment updated = paymentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Платёж не найден после обновления: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(id, "updateStatus", "Платеж не найден после обновления"));
 
         return paymentMapper.toDto(updated);
     }
@@ -89,11 +89,11 @@ public class PaymentService implements PaymentServiceInterface{
         int updatedRows = paymentRepository.updateNote(id, note);
 
         if (updatedRows == 0) {
-            throw new EntityNotFoundException("Платёж не найден: " + id);
+            throw new EntityNotFoundException(id, "updateNote", "Платеж не найден");
         }
 
         Payment updated = paymentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Платёж не найден после обновления: " + id));
+                .orElseThrow(() -> new EntityNotFoundException(id, "updateNote", "Платеж не найден после обновления"));
 
         return paymentMapper.toDto(updated);
     }
