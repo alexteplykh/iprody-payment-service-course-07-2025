@@ -51,8 +51,9 @@ public class PaymentService implements PaymentServiceInterface{
 
     @Override
     public PaymentDto update(UUID id, PaymentDto dto) {
-        Payment existing = paymentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Платёж не найден: " + id));
+        if (!paymentRepository.existsById(id)) {
+            throw new IllegalArgumentException("Платеж не найден: " + id);
+        }
 
         Payment updated = paymentMapper.toEntity(dto);
         updated.setGuid(id);
