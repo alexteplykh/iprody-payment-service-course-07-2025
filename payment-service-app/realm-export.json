@@ -29,6 +29,36 @@
       ],
       "realmRoles": ["user"],
       "requiredActions": []
+    },
+    {
+      "username": "testadmin",
+      "enabled": true,
+      "email": "testadmin@example.local",
+      "firstName": "Test",
+      "lastName": "Admin",
+      "createdTimestamp": 1723468800000,
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "adminpassword", "temporary":
+        false }
+      ],
+      "realmRoles": ["admin"],
+      "requiredActions": []
+    },
+    {
+      "username": "testreader",
+      "enabled": true,
+      "email": "testreader@example.local",
+      "firstName": "Test",
+      "lastName": "Reader",
+      "createdTimestamp": 1723468800000,
+      "emailVerified": true,
+      "credentials": [
+        { "type": "password", "value": "readerpassword", "temporary":
+        false }
+      ],
+      "realmRoles": ["reader"],
+      "requiredActions": []
     }
   ],
   "roles": {
