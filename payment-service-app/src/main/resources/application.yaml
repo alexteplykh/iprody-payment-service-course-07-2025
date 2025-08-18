@@ -21,3 +21,9 @@ spring:
   liquibase:
     enabled: true
     change-log: db/changelog/db.changelog-master.yaml
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8085/realms/iprody-lms
