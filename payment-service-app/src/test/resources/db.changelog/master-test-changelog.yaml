@@ -9,7 +9,7 @@ databaseChangeLog:
             tag: v0.0
 
   - include:
-      file: db/changelog/v1_0/db.changelog-1.0-create-payment.yaml
+      file: db/changelog/v1.0/db.changelog-1.0-create-payment.yaml
       relativeToChangelogFile: false
 
   - changeSet:
