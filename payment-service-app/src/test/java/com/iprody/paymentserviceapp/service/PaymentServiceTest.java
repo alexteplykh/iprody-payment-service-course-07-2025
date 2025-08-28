@@ -2,13 +2,13 @@ package com.iprody.paymentserviceapp.service;
 
 import com.iprody.paymentserviceapp.controller.PaymentFilterDto;
 import com.iprody.paymentserviceapp.dto.PaymentDto;
+import com.iprody.paymentserviceapp.exception.EntityNotFoundException;
 import com.iprody.paymentserviceapp.mapper.PaymentMapper;
 import com.iprody.paymentserviceapp.persistence.PaymentFilterFactory;
 import com.iprody.paymentserviceapp.persistence.PaymentRepository;
 import com.iprody.paymentserviceapp.persistence.entity.Currency;
 import com.iprody.paymentserviceapp.persistence.entity.Payment;
 import com.iprody.paymentserviceapp.persistence.entity.PaymentStatus;
-import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
