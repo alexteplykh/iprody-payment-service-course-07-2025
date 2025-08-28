@@ -4,6 +4,7 @@ import com.iprody.paymentserviceapp.exception.EntityNotFoundException;
 import com.iprody.paymentserviceapp.exception.ErrorResponse;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,6 +25,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TypeMismatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ErrorResponse handleNotFound(TypeMismatchException ex) {
+        return new ErrorResponse(
+                null,
+                null,
+                ex.getMessage()
+        );
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponse handleOther(AuthorizationDeniedException ex) {
         return new ErrorResponse(
                 null,
                 null,
