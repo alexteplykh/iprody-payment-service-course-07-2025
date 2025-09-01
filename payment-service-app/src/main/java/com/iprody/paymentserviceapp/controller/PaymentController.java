@@ -6,6 +6,8 @@ import com.iprody.paymentserviceapp.dto.PaymentStatusUpdateDto;
 import com.iprody.paymentserviceapp.service.PaymentServiceInterface;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,7 @@ import java.util.UUID;
 @RequestMapping("/payments")
 @RequiredArgsConstructor
 public class PaymentController {
+    private static final Logger log = LoggerFactory.getLogger(PaymentController.class);
 
     private final PaymentServiceInterface paymentService;
 
@@ -25,6 +28,7 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('admin')")
     public PaymentDto create(@RequestBody PaymentDto dto) {
+        logPaymentOperation("Create payment", dto.getGuid());
         return paymentService.create(dto);
     }
 
@@ -32,6 +36,7 @@ public class PaymentController {
     @GetMapping("/{guid}")
     @PreAuthorize("hasAnyRole('admin', 'reader')")
     public PaymentDto getPayment(@PathVariable UUID guid) {
+        logPaymentOperation("Get payment", guid);
         return paymentService.get(guid);
     }
 
@@ -40,7 +45,7 @@ public class PaymentController {
     @PreAuthorize("hasAnyRole('admin', 'reader')")
     public Page<PaymentDto> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter,
                                           Pageable pageable) {
-
+        logPaymentOperation("Get all payments", null);
         return paymentService.search(paymentFilter, pageable);
     }
 
@@ -48,6 +53,7 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('admin')")
     public PaymentDto update(@PathVariable UUID id, @RequestBody PaymentDto dto) {
+        logPaymentOperation("Update payment", id);
         return paymentService.update(id, dto);
     }
 
@@ -55,6 +61,7 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('admin')")
     public void delete(@PathVariable UUID id) {
+        logPaymentOperation("Delete payment", id);
         paymentService.delete(id);
     }
 
@@ -63,6 +70,7 @@ public class PaymentController {
     @PreAuthorize("hasRole('admin')")
     public PaymentDto updateStatus(@PathVariable UUID id,
                                    @RequestBody @Valid PaymentStatusUpdateDto dto) {
+        logPaymentOperation("Update payment status", id);
         return paymentService.updateStatus(id, dto.getStatus());
     }
 
@@ -71,6 +79,11 @@ public class PaymentController {
     @PreAuthorize("hasRole('admin')")
     public PaymentDto updateNote(@PathVariable UUID id,
                                  @RequestBody @Valid NoteUpdateDto dto) {
+        logPaymentOperation("Update payment note", id);
         return paymentService.updateNote(id, dto.getNote());
+    }
+
+    private void logPaymentOperation(String operation, UUID id) {
+        log.info("{} : {}", operation, id);
     }
 }
