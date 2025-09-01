@@ -28,16 +28,27 @@ public class PaymentController {
     @ResponseStatus(HttpStatus.CREATED)
     @PreAuthorize("hasRole('admin')")
     public PaymentDto create(@RequestBody PaymentDto dto) {
-        logPaymentOperation("Create payment", dto.getGuid());
-        return paymentService.create(dto);
+        String operation = "Create payment";
+        logPaymentOperation(operation, dto.getGuid());
+
+        PaymentDto createdDto = paymentService.create(dto);
+
+        logPaymentData(operation, createdDto == null ? "Not created" : "Created");
+
+        return createdDto;
     }
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{guid}")
     @PreAuthorize("hasAnyRole('admin', 'reader')")
     public PaymentDto getPayment(@PathVariable UUID guid) {
-        logPaymentOperation("Get payment", guid);
-        return paymentService.get(guid);
+        String operation = "Get payment";
+        logPaymentOperation(operation, guid);
+
+        PaymentDto paymentDto = paymentService.get(guid);
+
+        logPaymentData(operation, paymentDto == null ? "Not received" : "Received");
+        return paymentDto;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -45,24 +56,38 @@ public class PaymentController {
     @PreAuthorize("hasAnyRole('admin', 'reader')")
     public Page<PaymentDto> getAllPayment(@ModelAttribute PaymentFilterDto paymentFilter,
                                           Pageable pageable) {
-        logPaymentOperation("Get all payments", null);
-        return paymentService.search(paymentFilter, pageable);
+        String operation = "Get all payments";
+        logPaymentOperation(operation, null);
+
+        Page<PaymentDto> paymentDtoPage = paymentService.search(paymentFilter, pageable);
+
+        logPaymentData(operation, paymentDtoPage == null ? "Not received" : "Received");
+        return paymentDtoPage;
     }
 
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @PreAuthorize("hasAnyRole('admin')")
     public PaymentDto update(@PathVariable UUID id, @RequestBody PaymentDto dto) {
-        logPaymentOperation("Update payment", id);
-        return paymentService.update(id, dto);
+        String operation = "Update payment";
+        logPaymentOperation(operation, id);
+
+        PaymentDto updatedDto = paymentService.update(id, dto);
+
+        logPaymentData(operation, updatedDto == null ? "Not updated" : "Updated");
+        return updatedDto;
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PreAuthorize("hasRole('admin')")
     public void delete(@PathVariable UUID id) {
-        logPaymentOperation("Delete payment", id);
+        String operation = "Delete payment";
+        logPaymentOperation(operation, id);
+
         paymentService.delete(id);
+
+        logPaymentData(operation, "Deleted");
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -70,8 +95,13 @@ public class PaymentController {
     @PreAuthorize("hasRole('admin')")
     public PaymentDto updateStatus(@PathVariable UUID id,
                                    @RequestBody @Valid PaymentStatusUpdateDto dto) {
-        logPaymentOperation("Update payment status", id);
-        return paymentService.updateStatus(id, dto.getStatus());
+        String operation = "Update payment status";
+        logPaymentOperation(operation, id);
+
+        PaymentDto updatedDto = paymentService.updateStatus(id, dto.getStatus());
+
+        logPaymentData(operation, updatedDto == null ? "Not updated" : "Updated");
+        return updatedDto;
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -79,11 +109,20 @@ public class PaymentController {
     @PreAuthorize("hasRole('admin')")
     public PaymentDto updateNote(@PathVariable UUID id,
                                  @RequestBody @Valid NoteUpdateDto dto) {
-        logPaymentOperation("Update payment note", id);
+        String operation = "Update payment note";
+        logPaymentOperation(operation, id);
+
+        PaymentDto updatedDto = paymentService.updateNote(id, dto.getNote());
+
+        logPaymentData(operation, updatedDto == null ? "Not updated" : "Updated");
         return paymentService.updateNote(id, dto.getNote());
     }
 
     private void logPaymentOperation(String operation, UUID id) {
         log.info("{} : {}", operation, id);
+    }
+
+    private void logPaymentData(String operation, String state) {
+        log.debug("{} : {} ", operation, state);
     }
 }
