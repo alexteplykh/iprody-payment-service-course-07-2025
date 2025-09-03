@@ -1,6 +1,9 @@
 package com.iprody.paymentserviceapp.async;
 
+import com.iprody.paymentserviceapp.controller.PaymentController;
 import jakarta.annotation.PreDestroy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +16,8 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class InMemoryXPaymentAdapterMessageBroker implements AsyncSender<XPaymentAdapterRequestMessage> {
+    private static final Logger log = LoggerFactory.getLogger(InMemoryXPaymentAdapterMessageBroker.class);
+
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(2);
     private final AsyncListener<XPaymentAdapterResponseMessage> resultListener;
 
@@ -24,7 +29,9 @@ public class InMemoryXPaymentAdapterMessageBroker implements AsyncSender<XPaymen
     @Override
     public void send(XPaymentAdapterRequestMessage request) {
         UUID txId = UUID.randomUUID();
-        scheduler.schedule(() -> emit(request, txId), 5, TimeUnit.SECONDS);
+        scheduler.schedule(() -> emit(request, txId), 30, TimeUnit.SECONDS);
+
+        log.info("Sent message of payment: {}", request.getPaymentGuid());
     }
 
     private void emit(XPaymentAdapterRequestMessage request, UUID txId) {
