@@ -4,6 +4,7 @@ import jakarta.annotation.PreDestroy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 import java.util.concurrent.Executors;
@@ -23,14 +24,21 @@ public class InMemoryXPaymentAdapterMessageBroker implements AsyncSender<XPaymen
     @Override
     public void send(XPaymentAdapterRequestMessage request) {
         UUID txId = UUID.randomUUID();
-        scheduler.schedule(() -> emit(request, txId, XPaymentAdapterStatus.PROCESSING), 0, TimeUnit.SECONDS);
-        scheduler.schedule(() -> emit(request, txId, XPaymentAdapterStatus.PROCESSING), 10, TimeUnit.SECONDS);
-        scheduler.schedule(() -> emit(request, txId, XPaymentAdapterStatus.SUCCEEDED), 20, TimeUnit.SECONDS);
+        scheduler.schedule(() -> emit(request, txId), 5, TimeUnit.SECONDS);
     }
 
-    private void emit(XPaymentAdapterRequestMessage request, UUID txId, XPaymentAdapterStatus status) {
+    private void emit(XPaymentAdapterRequestMessage request, UUID txId) {
+        XPaymentAdapterStatus status;
+        if (request.getAmount().stripTrailingZeros().scale() > 0) {
+            status = XPaymentAdapterStatus.CANCELED;
+        } else {
+            status = request.getAmount().toBigIntegerExact().mod(BigInteger.TWO).equals(BigInteger.ZERO)
+                    ? XPaymentAdapterStatus.SUCCEEDED
+                    : XPaymentAdapterStatus.CANCELED;
+        }
+
         XPaymentAdapterResponseMessage result = new XPaymentAdapterResponseMessage();
-        result.setPaymentGuid(request.getMessageId());
+        result.setPaymentGuid(request.getPaymentGuid());
         result.setAmount(request.getAmount());
         result.setCurrency(request.getCurrency());
         result.setTransactionRefId(txId);
