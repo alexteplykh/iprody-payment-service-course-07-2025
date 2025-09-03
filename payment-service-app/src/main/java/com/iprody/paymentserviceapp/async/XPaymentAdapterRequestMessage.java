@@ -8,29 +8,12 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.UUID;
 
+@Getter
+@Setter
 public class XPaymentAdapterRequestMessage implements Message {
-
-    @Setter
+    private UUID messageId;
     private UUID paymentGuid;
-
-    @Setter
-    @Getter
     private BigDecimal amount;
-
-    @Setter
-    @Getter
     private Currency currency;
-
-    @Setter
     private OffsetDateTime occurredAt;
-
-    @Override
-    public UUID getMessageId() {
-        return paymentGuid;
-    }
-
-    @Override
-    public OffsetDateTime getOccurredAt() {
-        return occurredAt;
-    }
 }
