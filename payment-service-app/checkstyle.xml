@@ -14,19 +14,7 @@
         <module name="WhitespaceAfter"/>
         <!-- Проверка пробелов вокруг операторов -->
         <module name="WhitespaceAround"/>
-        <!-- Проверка на финальные локальные переменные -->
-        <module name="FinalLocalVariable"/>
         <!-- Проверка на неиспользуемые импорты -->
         <module name="UnusedImports"/>
-        <!-- Проверка отступов -->
-        <module name="Indentation">
-            <property name="basicOffset" value="4"/> <!-- Базовый отступ -->
-            <property name="braceAdjustment" value="0"/> <!-- Отступ для скобок-->
-            <property name="caseIndent" value="4"/> <!-- Отступ для case в switch -->
-            <property name="throwsIndent" value="4"/> <!-- Отступ для throws-->
-            <property name="arrayInitIndent" value="4"/> <!-- Отступ дляинициализации массивов -->
-            <property name="lineWrappingIndentation" value="4"/> <!-- Отступ для переноса строк -->
-            <property name="forceStrictCondition" value="true"/> <!-- Строгая проверка отступов -->
-        </module>
     </module>
 </module>
