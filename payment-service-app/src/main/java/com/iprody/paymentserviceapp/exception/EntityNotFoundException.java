@@ -8,7 +8,7 @@ import java.util.UUID;
 
 @Getter
 @ResponseStatus(HttpStatus.NOT_FOUND)
-public class EntityNotFoundException extends RuntimeException{
+public class EntityNotFoundException extends RuntimeException {
     private UUID id;
     private String operation;
 

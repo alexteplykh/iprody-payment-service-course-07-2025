@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 import java.util.UUID;
 
 @Service
-public class PaymentService implements PaymentServiceInterface{
+public class PaymentService implements PaymentServiceInterface {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
 
@@ -79,7 +79,8 @@ public class PaymentService implements PaymentServiceInterface{
         }
 
         Payment updated = paymentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(id, "updateStatus", "Платеж не найден после обновления"));
+                .orElseThrow(() ->
+                        new EntityNotFoundException(id, "updateStatus", "Платеж не найден после обновления"));
 
         return paymentMapper.toDto(updated);
     }
