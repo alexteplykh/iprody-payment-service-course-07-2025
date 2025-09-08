@@ -1,9 +1,12 @@
 package com.iprody.paymentserviceapp.service;
 
+import com.iprody.paymentserviceapp.async.AsyncSender;
+import com.iprody.paymentserviceapp.async.XPaymentAdapterRequestMessage;
 import com.iprody.paymentserviceapp.controller.PaymentFilterDto;
 import com.iprody.paymentserviceapp.dto.PaymentDto;
 import com.iprody.paymentserviceapp.exception.EntityNotFoundException;
 import com.iprody.paymentserviceapp.mapper.PaymentMapper;
+import com.iprody.paymentserviceapp.mapper.XPaymentAdapterMapper;
 import com.iprody.paymentserviceapp.persistence.PaymentFilterFactory;
 import com.iprody.paymentserviceapp.persistence.PaymentRepository;
 import com.iprody.paymentserviceapp.persistence.entity.Payment;
@@ -20,11 +23,17 @@ import java.util.UUID;
 public class PaymentService implements PaymentServiceInterface {
     private final PaymentRepository paymentRepository;
     private final PaymentMapper paymentMapper;
+    private final XPaymentAdapterMapper xPaymentAdapterMapper;
+    private final AsyncSender<XPaymentAdapterRequestMessage> sender;
 
     public PaymentService(PaymentRepository paymentRepository,
-                          PaymentMapper paymentMapper) {
+                          PaymentMapper paymentMapper,
+                          XPaymentAdapterMapper xPaymentAdapterMapper,
+                          AsyncSender<XPaymentAdapterRequestMessage> sender) {
         this.paymentRepository = paymentRepository;
         this.paymentMapper = paymentMapper;
+        this.xPaymentAdapterMapper = xPaymentAdapterMapper;
+        this.sender = sender;
     }
 
     @Override
@@ -44,9 +53,14 @@ public class PaymentService implements PaymentServiceInterface {
     @Override
     public PaymentDto create(PaymentDto dto) {
         Payment entity = paymentMapper.toEntity(dto);
-        entity.setGuid(null);
         Payment saved = paymentRepository.save(entity);
-        return paymentMapper.toDto(saved);
+
+        PaymentDto resultDto = paymentMapper.toDto(saved);
+
+        XPaymentAdapterRequestMessage requestMessage = xPaymentAdapterMapper.toXPaymentAdapterRequestMessage(entity);
+        sender.send(requestMessage);
+
+        return resultDto;
     }
 
     @Override
