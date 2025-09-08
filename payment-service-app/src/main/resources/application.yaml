@@ -41,8 +41,8 @@ spring:
       auto-offset-reset: earliest
       enable-auto-commit: false
       properties:
-        spring.json.trusted.packages: "com.iprody.payment.service.app.async"
-        spring.json.value.default.type: "com.iprody.payment.service.app.async.XPaymentAdapterResponseMessage"
+        spring.json.trusted.packages: "com.iprody.paymentserviceapp.async"
+        spring.json.value.default.type: "com.iprody.paymentserviceapp.async.XPaymentAdapterResponseMessage"
 
     listener:
       ack-mode: manual
@@ -63,7 +63,7 @@ management:
 
 logging:
   level:
-    com.iprody.paymentserviceapp: DEBUG
+    com.iprody.paymentserviceapp: INFO
     org.springframework.web: INFO
     org.springframework.data: INFO
     org.springframework.security: INFO
