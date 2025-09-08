@@ -6,9 +6,13 @@ import com.iprody.paymentserviceapp.async.XPaymentAdapterResponseMessage;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
+import org.springframework.stereotype.Component;
 
+@Primary
+@Component
 public class KafkaXPaymentAdapterResultListenerAdapter implements AsyncListener<XPaymentAdapterResponseMessage> {
     private static final Logger log = LoggerFactory.getLogger(KafkaXPaymentAdapterResultListenerAdapter.class);
     private final MessageHandler<XPaymentAdapterResponseMessage> handler;
