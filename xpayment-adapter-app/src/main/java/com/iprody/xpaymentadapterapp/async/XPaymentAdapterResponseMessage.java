@@ -1,6 +1,6 @@
 package com.iprody.xpaymentadapterapp.async;
 
-import com.iprody.paymentserviceapp.persistence.entity.Currency;
+import com.iprody.xpaymentadapterapp.persistence.entity.Currency;
 import lombok.Getter;
 import lombok.Setter;
 
