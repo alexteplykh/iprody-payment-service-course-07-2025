@@ -26,12 +26,13 @@ public class KafkaXPaymentAdapterRequestListenerAdapter implements AsyncListener
 
     @KafkaListener(topics = "${app.kafka.topics.x-payment-adapter.request}",
                    groupId = "${spring.kafka.consumer.group-id}")
-    public void consume(ConsumerRecord<String, XPaymentAdapterRequestMessage> record,
+    public void consume(XPaymentAdapterRequestMessage message,
+                        ConsumerRecord<String, XPaymentAdapterRequestMessage> record,
                         Acknowledgment ack) {
         try {
             log.info("Received XPayment Adapter request: paymentGuid={}, partition={}, offset={}",
-                     record.value().getPaymentGuid(), record.partition(), record.offset());
-            onMessage(record.value());
+                    message.getPaymentGuid(), record.partition(), record.offset());
+            onMessage(message);
             ack.acknowledge();
         } catch (Exception e) {
             log.error("Error handling XPayment Adapter request for paymentGuid={}", record.value().getPaymentGuid(), e);
