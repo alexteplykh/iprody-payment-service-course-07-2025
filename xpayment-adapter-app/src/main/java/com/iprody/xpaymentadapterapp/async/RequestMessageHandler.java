@@ -1,8 +1,8 @@
 package com.iprody.xpaymentadapterapp.async;
 
-import com.iprody.xpayment.app.api.model.ChargeResponse;
-import com.iprody.xpayment.app.api.model.CreateChargeRequest;
 import com.iprody.xpaymentadapterapp.api.XPaymentProviderGateway;
+import com.iprody.xpaymentadapterapp.dto.CreateChargeRequestDto;
+import com.iprody.xpaymentadapterapp.dto.CreateChargeResponseDto;
 import com.iprody.xpaymentadapterapp.persistence.entity.Currency;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,13 +33,13 @@ public class RequestMessageHandler implements MessageHandler<XPaymentAdapterRequ
                     message.getAmount(),
                     message.getCurrency());
 
-        CreateChargeRequest createChargeRequest = new CreateChargeRequest();
+        CreateChargeRequestDto createChargeRequest = new CreateChargeRequestDto();
         createChargeRequest.setAmount(message.getAmount());
         createChargeRequest.setCurrency(message.getCurrency().toString());
         createChargeRequest.setOrder(message.getPaymentGuid());
 
         try {
-            ChargeResponse chargeResponse = xPaymentProviderGateway.createCharge(createChargeRequest);
+            CreateChargeResponseDto chargeResponse = xPaymentProviderGateway.createCharge(createChargeRequest);
 
             logger.info("Payment request with paymentGuid - {} is sent for payment processing. Current status - ",
                         chargeResponse.getStatus());

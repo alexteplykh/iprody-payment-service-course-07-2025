@@ -1,12 +1,12 @@
 package com.iprody.xpaymentadapterapp.api;
 
-import com.iprody.xpayment.app.api.model.ChargeResponse;
-import com.iprody.xpayment.app.api.model.CreateChargeRequest;
+import com.iprody.xpaymentadapterapp.dto.CreateChargeRequestDto;
+import com.iprody.xpaymentadapterapp.dto.CreateChargeResponseDto;
 import org.springframework.web.client.RestClientException;
 
 import java.util.UUID;
 
 public interface XPaymentProviderGateway {
-    ChargeResponse createCharge(CreateChargeRequest createChargeRequest) throws RestClientException;
-    ChargeResponse retrieveCharge(UUID id) throws RestClientException;
+    CreateChargeResponseDto createCharge(CreateChargeRequestDto createChargeRequest) throws RestClientException;
+    CreateChargeResponseDto retrieveCharge(UUID id) throws RestClientException;
 }
