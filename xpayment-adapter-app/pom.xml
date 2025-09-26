@@ -100,6 +100,10 @@
                                 <useTags>true</useTags>
                                 <useJakartaEe>true</useJakartaEe>
                             </configOptions>
+                            <globalProperties>
+                                <apiTests>false</apiTests>
+                                <modelTests>false</modelTests>
+                            </globalProperties>
                         </configuration>
                     </execution>
                 </executions>
